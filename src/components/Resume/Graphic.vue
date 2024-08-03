@@ -23,7 +23,9 @@
         if(!svgElementRef.value) return;
         const {width, totalLength} = values();
         const space = width/totalLength;
-        const index = parseInt(current/space);
+        const totalSpaces = parseInt(width/space);
+        let index = parseInt(current/space);
+        if(index >= totalSpaces) index = totalSpaces - 1;
         if(index == indexGraphic.value) return;
         indexGraphic.value = index;
     });
