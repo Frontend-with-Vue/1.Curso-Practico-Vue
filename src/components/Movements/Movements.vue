@@ -15,8 +15,20 @@
         />
     </div>
     <Teleport to="#app">
-        <ModalUpdateMovement v-if="showModalUpdateMovement"/>
+        <Transition name="modalUpdateMovement">
+            <ModalUpdateMovement v-if="showModalUpdateMovement"></ModalUpdateMovement>
+        </Transition>
     </Teleport>
 </template>
 
-<style scoped></style>
+<style scoped>
+.modalUpdateMovement-enter-active,
+.modalUpdateMovement-leave-active {
+    transition: all 2s ease-in;
+}
+
+.modalUpdateMovement-enter-from,
+.modalUpdateMovement-leave-to {
+    opacity: 0;
+}
+</style>
