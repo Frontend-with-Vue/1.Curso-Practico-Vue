@@ -9,7 +9,6 @@
     import { Movement, Type } from '@/Models/Movement';
     import { ref, computed, provide, onBeforeMount } from 'vue';
 
-    const totalAmount = ref(0);
     const totalMovements = ref([]);
     function removeMovement(id){
         totalMovements.value = totalMovements.value.filter(movement => movement.id !== id);
@@ -66,9 +65,7 @@
             <Header></Header>
         </template>
         <template #resume>
-            <Resume
-                :totalAmount="totalAmount"
-            >
+            <Resume>
                 <template #graphic>
                     <Graphic>
                         <template #filterByDate>

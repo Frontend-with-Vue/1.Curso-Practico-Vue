@@ -1,35 +1,25 @@
 <script setup>
+    import { Type } from '@/Models/Movement.js';
     import { currencyFormatter } from '../../Functions/currencyFormatter.js';
-    import { computed } from 'vue';
-    const properties = defineProps({
-        label: {
-            type: String,
-            default: null
-        },
-        currentAmount: {
-            type: Number,
-            default: null
-        },
-        totalAmount: {
-            type: Number,
-            default: 0,
-            required: true
-        }
-    });
+    import { computed, inject } from 'vue';
+    const {filterMovementsDate} = inject('movements');
     const amountVisual = computed(()=>{
-        return properties.currentAmount?
-            currencyFormatter.format(properties.currentAmount):
-            currencyFormatter.format(properties.totalAmount);
-    });
-    const labelVisual = computed(()=>{
-        return properties.label?properties.label: 'Ahorra total';
+        if(filterMovementsDate.value.length == 0) return 0;
+        if(filterMovementsDate.value.length == 1) return filterMovementsDate.value[0].amount;
+        return filterMovementsDate.value.reduce((sum, movement)=>{
+            if(movement.type == Type.INCOME) return sum + movement.amount;
+            else return sum - movement.amount;
+        },0);
     });
 </script>
 
 <template>
     <div class="flex flex-col justify-center items-center">
-        <h1 class="text-lg">{{ labelVisual }}</h1>
-        <h2 class="text-5xl font-bold text-green-500">{{ amountVisual }}</h2>
+        <h1 class="text-lg">Ahorra total</h1>
+        <h2
+            class="text-5xl font-bold"
+            :class="amountVisual>=0?'text-green-500':'text-red-500'"
+        >{{ currencyFormatter.format(amountVisual) }}</h2>
     </div>
     <div>
         <slot name="graphic"></slot>
