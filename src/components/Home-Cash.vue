@@ -44,16 +44,29 @@
     }
 
     const filterDate = ref(3);
+    const rangeDates = ref([]);
     const filterMovementsDate = computed(()=>{
         if(filterDate.value == 1) return totalMovements.value;
-        if(filterDate.value == 2) return totalMovements.value;
+        if(filterDate.value == 2) return totalMovements.value.filter(movement=>checkInRange(movement));
         if(filterDate.value == 3) return totalMovements.value.filter(movement => movement.date > (new Date().getTime() - 30*24*60*60*1000));
         return totalMovements.value
     });
+    function checkInRange(movement){
+        const movementDate = new Date(movement.date).getTime();
+        const statDate = new Date(rangeDates.value[0]).getTime();
+        const endDate = new Date(rangeDates.value[1]).getTime();
+        const isValid = movementDate >= statDate && movementDate <= endDate;
+        return isValid;
+    }
 
     const showModalMovement = ref(false);
     function toggleModalMovement(){
         showModalMovement.value = !showModalMovement.value;
+    };
+
+    const showModalChooseDate = ref(false);
+    function toggleModalChooseDate(){
+        showModalChooseDate.value = !showModalChooseDate.value;
     }
 
     provide('movements',{
@@ -63,24 +76,28 @@
         toggleModalMovement,
         addNewMovement,
         filterDate,
+        rangeDates,
         filterMovementsDate,
         currentIdUpdatedMovement,
         currentUpdateMovement,
         setIdUpdatedMovement,
         toggleModalUpdateMovement,
         showModalUpdateMovement,
-        updateMovemente
+        updateMovemente,
+        toggleModalChooseDate,
+        showModalChooseDate
     });
 
 
     onBeforeMount(() => {
         totalMovements.value =  [
-        new Movement({ title: 'Salary', description: 'Monthly salary payment', amount: 100, type: Type.INCOME }),
-        new Movement({ title: 'Groceries', description: 'Weekly grocery shopping', amount: 150, type: Type.OUTCOME }),
-        new Movement({ title: 'Electricity Bill', description: 'Monthly electricity bill payment', amount: 75, type: Type.OUTCOME }),
-        new Movement({ title: 'Freelance Work', description: 'Payment for freelance project', amount: 200, type: Type.INCOME }),
-        new Movement({ title: 'Gym Membership', description: 'Monthly gym membership fee', amount: 50, type: Type.OUTCOME })
+        new Movement({ title: 'Salary', description: 'Monthly salary payment', amount: 100, type: Type.INCOME, date: new Date('04-15-2024') }),
+        new Movement({ title: 'Groceries', description: 'Weekly grocery shopping', amount: 150, type: Type.OUTCOME, date: new Date('05-15-2024') }),
+        new Movement({ title: 'Electricity Bill', description: 'Monthly electricity bill payment', amount: 75, type: Type.OUTCOME, date: new Date('06-15-2024') }),
+        new Movement({ title: 'Freelance Work', description: 'Payment for freelance project', amount: 200, type: Type.INCOME, date: new Date('07-15-2024') }),
+        new Movement({ title: 'Gym Membership', description: 'Monthly gym membership fee', amount: 50, type: Type.OUTCOME, date: new Date('08-1-2024') })
         ];
+        console.log(totalMovements.value)
     });
 </script>
 
