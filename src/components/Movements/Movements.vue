@@ -1,7 +1,8 @@
 <script setup>
     import { inject } from 'vue';
     import MovementItem from './MovementItem.vue';
-    const {totalMovements} = inject('movements');
+    import ModalUpdateMovement from '../ModalUpdateMovement.vue';
+    const {totalMovements, showModalUpdateMovement} = inject('movements');
 </script>
 
 <template>
@@ -13,6 +14,9 @@
             :movement="movementItem"
         />
     </div>
+    <Teleport to="#app">
+        <ModalUpdateMovement v-if="showModalUpdateMovement"/>
+    </Teleport>
 </template>
 
 <style scoped></style>

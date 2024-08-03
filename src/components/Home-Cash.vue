@@ -12,16 +12,35 @@
     const totalMovements = ref([]);
     function removeMovement(id){
         totalMovements.value = totalMovements.value.filter(movement => movement.id !== id);
-/*         totalMovements.value = totalMovements.value.map(movement=>{
-            if(movement.id == id){
-                return new Movement({...movement, amount: 12})
-            } else {
-                return new Movement(movement)
-            }
-        }) */
     }
     function addNewMovement(movement){
         totalMovements.value.push(movement);
+    }
+    function updateMovemente(updatedMovement){
+        totalMovements.value = totalMovements.value.map(movement=>{
+            if(movement.id == updatedMovement.id){
+                return new Movement({...updatedMovement})
+            } else {
+                return new Movement(movement)
+            }
+        })
+    };
+
+    const currentIdUpdatedMovement = ref(null);
+    const currentUpdateMovement = computed(()=>{
+        if(currentIdUpdatedMovement.value){
+            return totalMovements.value.find((mov)=>mov.id == currentIdUpdatedMovement.value);
+        }
+        return null;
+    });
+    function setIdUpdatedMovement(newId){
+        currentIdUpdatedMovement.value = newId;
+        toggleModalUpdateMovement();
+    }
+
+    const showModalUpdateMovement = ref(false);
+    function toggleModalUpdateMovement(){
+        showModalUpdateMovement.value = !showModalUpdateMovement.value;
     }
 
     const filterDate = ref(3);
@@ -44,7 +63,13 @@
         toggleModalMovement,
         addNewMovement,
         filterDate,
-        filterMovementsDate
+        filterMovementsDate,
+        currentIdUpdatedMovement,
+        currentUpdateMovement,
+        setIdUpdatedMovement,
+        toggleModalUpdateMovement,
+        showModalUpdateMovement,
+        updateMovemente
     });
 
 
@@ -79,7 +104,7 @@
             </Resume>
         </template>
         <template #movements>
-            <Movements></Movements>
+            <Movements/>
         </template>
     </Layout>
 </template>

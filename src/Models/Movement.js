@@ -3,7 +3,7 @@ export const Type = {
     OUTCOME: 'outcome'
 }
 
-let auxId = 0;
+let auxId = 1;
 
 export class Movement {
     constructor(

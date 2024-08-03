@@ -9,7 +9,7 @@
         return currencyFormatter.format(properties.movement.amount)
     });
 
-    const {removeMovement} = inject('movements');
+    const {removeMovement, setIdUpdatedMovement} = inject('movements');
 </script>
 
 <template>
@@ -34,7 +34,10 @@
             >
                 <i class="bi bi-trash-fill"></i>
             </button>
-            <button class="cursor-pointer hover:text-red-600 hover:scale-125 transition">
+            <button
+                @click="setIdUpdatedMovement(properties.movement.id)"
+                class="cursor-pointer hover:text-red-600 hover:scale-125 transition"
+            >
                 <i class="bi bi-pencil-fill"></i>
             </button>
         </div>
