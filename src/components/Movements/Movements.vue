@@ -7,7 +7,7 @@
 
 <template>
     <h2 class=" text-3xl text-blue-400 font-bold p-5">Historial</h2>
-    <div class="flex flex-col gap-2 px-2">
+    <div class="flex flex-col gap-2 px-2 overflow-y-auto">
         <MovementItem
             v-for="movementItem in totalMovements"
             :key="movementItem.id"

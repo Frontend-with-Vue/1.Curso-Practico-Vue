@@ -14,11 +14,11 @@
         <section class="h-screen w-full grid place-content-center">
             <slot name="resume"></slot>
         </section>
-        <section class="fixed z-20 bottom-0 w-full" :class="showMovements?'completed':'incompleted'">
+        <section class="fixed z-20 bottom-0 w-full py-2" :class="showMovements?'completed':'incompleted'">
             <div class="h-[5vh] w-full grid place-content-center rounded-t-2xl shadow-[0_4px_25px_rgb(96,165,250)] bg-white cursor-pointer" @click="toggleMovements">
                 <div class="w-40 h-3 bg-blue-400 rounded-md"></div>
             </div>
-            <div class="h-[87vh] bg-white">
+            <div class="h-[87vh] flex flex-col bg-white">
                 <slot name="movements"></slot>
             </div>
         </section>
