@@ -2,7 +2,7 @@
     import { inject, computed, ref } from 'vue';
     import { Type } from '@/Models/Movement';
 
-    const { totalMovements } = inject('movements');
+    const { filterMovementsDate } = inject('movements');
 
     const svgElementRef = ref(null);
     const xVerticalLine = ref('100%');
@@ -12,7 +12,7 @@
     });
     const yHorizontalLine = computed(()=>{
         if(!svgElementRef.value) return '50%';
-        if(totalMovements.value.length == 0 || totalMovements.value.length == 1) return '50%';
+        if(filterMovementsDate.value.length == 0 || filterMovementsDate.value.length == 1) return '50%';
         const {percentIncome} = values();
         return `${percentIncome*100}%`;
     });
@@ -32,10 +32,10 @@
     };
     function convertirToPoints(){
         if(!svgElementRef.value) return '';
-        if(totalMovements.value.length == 0) return '';
+        if(filterMovementsDate.value.length == 0) return '';
         const {width, totalLength} = values();
-        const pointZero = `0,${normalizeY(totalMovements.value[0].type,totalMovements.value[0].amount)}`;
-        return totalMovements.value.reduce((result, movement, i)=>{
+        const pointZero = `0,${normalizeY(filterMovementsDate.value[0].type,filterMovementsDate.value[0].amount)}`;
+        return filterMovementsDate.value.reduce((result, movement, i)=>{
             const { amount, type } = movement;
             const x = ((i+1) / totalLength) * width;
             let y =  normalizeY(type, amount);
@@ -46,10 +46,10 @@
         const height = svgElementRef.value.clientHeight;
         const width = svgElementRef.value.clientWidth;
 
-        const totalLength = totalMovements.value.length;
+        const totalLength = filterMovementsDate.value.length;
 
-        let maxIncome = Math.max(...totalMovements.value.filter((movement)=>movement.type == Type.INCOME).map(movement=>movement.amount));
-        let maxOutcome = Math.max(...totalMovements.value.filter((movement)=>movement.type == Type.OUTCOME).map(movement=>movement.amount));
+        let maxIncome = Math.max(...filterMovementsDate.value.filter((movement)=>movement.type == Type.INCOME).map(movement=>movement.amount));
+        let maxOutcome = Math.max(...filterMovementsDate.value.filter((movement)=>movement.type == Type.OUTCOME).map(movement=>movement.amount));
 
         maxIncome = maxIncome | 0;
         maxOutcome = maxOutcome | 0;
@@ -62,7 +62,7 @@
 </script>
 
 <template>
-    <svg @click="moveLine" @mousemove="moveLine" class="w-full min-w-80 h-[200px] my-10" ref="svgElementRef">
+    <svg @click="moveLine" @mousemove="moveLine" class="w-full min-w-80 h-[200px] my-10 overflow-visible" ref="svgElementRef">
         <line
             class="stroke-2 stroke-blue-950 hover:stroke-red-600"
             x1="0"

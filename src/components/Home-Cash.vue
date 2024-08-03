@@ -7,7 +7,7 @@
     import Action from './Resume/Action.vue';
     import Movements from './Movements/Movements.vue';
     import { Movement, Type } from '@/Models/Movement';
-    import { ref, provide, onBeforeMount } from 'vue';
+    import { ref, computed, provide, onBeforeMount } from 'vue';
 
     const totalAmount = ref(0);
     const totalMovements = ref([]);
@@ -25,6 +25,14 @@
         totalMovements.value.push(movement);
     }
 
+    const filterDate = ref(3);
+    const filterMovementsDate = computed(()=>{
+        if(filterDate.value == 1) return totalMovements.value;
+        if(filterDate.value == 2) return totalMovements.value;
+        if(filterDate.value == 3) return totalMovements.value.filter(movement => movement.date > (new Date().getTime() - 30*24*60*60*1000));
+        return totalMovements.value
+    });
+
     const showModalMovement = ref(false);
     function toggleModalMovement(){
         showModalMovement.value = !showModalMovement.value;
@@ -35,7 +43,9 @@
         removeMovement,
         showModalMovement,
         toggleModalMovement,
-        addNewMovement
+        addNewMovement,
+        filterDate,
+        filterMovementsDate
     });
 
 
