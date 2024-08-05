@@ -25,7 +25,7 @@
             </p>
         </div>
         <div class="flex flex-col text-blue-400 text-lg">
-            <button class="cursor-pointer rotate-90 hover:text-red-600 hover:scale-125 transition">
+            <button class="cursor-pointer rotate-90 hover:text-red-600 hover:scale-125 transition handle">
                 <i class="bi bi-grid-3x2-gap-fill"></i>
             </button>
             <button
