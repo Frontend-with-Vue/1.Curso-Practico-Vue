@@ -29,26 +29,32 @@
             <ul class="flex flex-col items-center gap-2 text-lg text-green-500 sm:flex-row sm:justify-center sm:gap-4">
                 <li class="flex w-min">
                     <router-link
+                        @click="toggleMenu"
                         to="/"
                         class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
-                        activeClass="border-blue-400 border-2 text-blue-400"
+                        exactActiveClass="border-blue-400 border-2 text-blue-400"
                     >Home</router-link>
                 </li>
                 <li class="flex w-min">
                     <router-link
+                        @click="toggleMenu"
                         to="/about"
-                        class="p-2 rounded-lg text-green-500 font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
+                        class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
+                        exactActiveClass="border-blue-400 border-2 text-blue-400"
                     >About</router-link>
                 </li>
                 <li class="flex w-min">
                     <router-link
+                        @click="toggleMenu"
                         to="/profile"
-                        class="p-2 rounded-lg text-green-500 font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
+                        class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
+                        exactActiveClass="border-blue-400 border-2 text-blue-400"
                     >Profile</router-link>
                 </li>
             </ul>
         </nav>
     </header>
+    <router-view/>
 </template>
 
 <styles scoped>

@@ -7,11 +7,8 @@
 </script>
 
 <template>
-    <section class="fixed z-10 w-full h-[8vh]">
-        <slot name="header"></slot>
-    </section>
     <main>
-        <section class="h-screen w-full grid place-content-center">
+        <section class="h-[calc(100vh_-_76px)] w-full pb-20 grid place-content-center">
             <slot name="resume"></slot>
         </section>
         <section class="fixed z-20 bottom-0 w-full py-2" :class="showMovements?'completed':'incompleted'">

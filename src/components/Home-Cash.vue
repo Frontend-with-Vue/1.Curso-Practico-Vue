@@ -1,6 +1,5 @@
 <script setup>
     import Layout from './Layout.vue';
-    import Header from './Header.vue';
     import Resume from './Resume/Index.vue';
     import Graphic from './Resume/Graphic.vue';
     import FilterByDates from './Resume/FilterByDates.vue';
@@ -103,9 +102,6 @@
 
 <template>
     <Layout>
-        <template #header>
-            <Header></Header>
-        </template>
         <template #resume>
             <Resume>
                 <template #graphic>
