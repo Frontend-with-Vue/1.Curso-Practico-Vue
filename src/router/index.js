@@ -10,6 +10,7 @@ const router = createRouter({
         {
           path: '',
           name: 'home',
+          alias: ['home', 'main'],
           component: ()=> import('../components/Home-Cash.vue')
         },
         {
