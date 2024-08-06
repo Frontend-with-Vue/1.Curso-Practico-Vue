@@ -30,7 +30,7 @@
                 <li class="flex w-min">
                     <router-link
                         @click="toggleMenu"
-                        to="/"
+                        :to="{name: 'home'}"
                         class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
                         exactActiveClass="border-blue-400 border-2 text-blue-400"
                     >Home</router-link>
@@ -38,7 +38,7 @@
                 <li class="flex w-min">
                     <router-link
                         @click="toggleMenu"
-                        to="/about"
+                        :to="{name: 'about'}"
                         class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
                         exactActiveClass="border-blue-400 border-2 text-blue-400"
                     >About</router-link>
@@ -46,7 +46,7 @@
                 <li class="flex w-min">
                     <router-link
                         @click="toggleMenu"
-                        to="/profile"
+                        :to="{ path: '/profile'}"
                         class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
                         exactActiveClass="border-blue-400 border-2 text-blue-400"
                     >Profile</router-link>
