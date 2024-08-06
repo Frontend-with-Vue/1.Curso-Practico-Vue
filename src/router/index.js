@@ -20,11 +20,11 @@ const router = createRouter({
         },
         {
           path: 'chat',
-          name: 'chat',
           component: ()=> import('../views/Chat.vue'),
           children: [
             {
               path: '',
+              name: 'chat',
               components: {
                 default: () => import('../views/ChatContent.vue'),
                 sidebar: () => import('../views/ChatSideBar.vue')
@@ -32,6 +32,19 @@ const router = createRouter({
             }
           ]
         },
+        {
+          path: 'profile',
+          component: ()=> import('../views/Profile.vue'),
+          props: true,
+          children: [
+            {
+              path: ':userId',
+              name: 'profile',
+              component: () => import('../views/Profile.vue'),
+              props: true
+            }
+          ]
+        }
       ]
     },
     {
