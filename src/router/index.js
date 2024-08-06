@@ -4,8 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '',
-      name: 'header',
+      path: '/',
       component: ()=>import('../components/Header.vue'),
       children: [
         {
@@ -14,10 +13,24 @@ const router = createRouter({
           component: ()=> import('../components/Home-Cash.vue')
         },
         {
-          path: '/about',
+          path: 'about',
           name: 'about',
           component: () => import('../views/About.vue')
-        }
+        },
+        {
+          path: 'chat',
+          name: 'chat',
+          component: ()=> import('../views/Chat.vue'),
+          children: [
+            {
+              path: '',
+              components: {
+                default: () => import('../views/ChatContent.vue'),
+                sidebar: () => import('../views/ChatSideBar.vue')
+              }
+            }
+          ]
+        },
       ]
     },
     {
