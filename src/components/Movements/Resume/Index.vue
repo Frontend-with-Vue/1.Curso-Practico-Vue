@@ -1,6 +1,6 @@
 <script setup>
     import { Type } from '@/Models/Movement.js';
-    import { currencyFormatter } from '../../Functions/currencyFormatter.js';
+    import { currencyFormatter } from '../../../Functions/currencyFormatter.js';
     import { computed, inject } from 'vue';
     const {filterMovementsDate} = inject('movements');
     const amountVisual = computed(()=>{

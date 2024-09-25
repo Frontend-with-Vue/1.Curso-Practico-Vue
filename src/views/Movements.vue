@@ -1,11 +1,11 @@
 <script setup>
-    import Layout from './Layout.vue';
-    import Resume from './Resume/Index.vue';
-    import Graphic from './Resume/Graphic.vue';
-    import FilterByDates from './Resume/FilterByDates.vue';
-    import Action from './Resume/Action.vue';
-    import Movements from './Movements/Movements.vue';
-    import { Movement, Type } from '@/Models/Movement';
+    import Layout from '../components/Movements/Layout.vue';
+    import Resume from '@/components/Movements/Resume/Index.vue';
+    import Graphic from '@/components/Movements/Resume/Graphic.vue';
+    import FilterByDates from '@/components/Movements/Resume/FilterByDates.vue';
+    import Action from '@/components/Movements/Resume/Action.vue';
+    import Movements from '../components/Movements/MovementList.vue';
+    import { Movement, Type } from '@/Models/Movement.js';
     import { ref, computed, provide, onBeforeMount } from 'vue';
 
     const totalMovements = ref([]);
@@ -103,22 +103,22 @@
 <template>
     <Layout>
         <template #resume>
-            <Resume>
-                <template #graphic>
-                    <Graphic>
-                        <template #filterByDate>
-                            <FilterByDates></FilterByDates>
-                        </template>
-                    </Graphic>
+          <Resume>
+            <template #graphic>
+              <Graphic>
+                <template #filterByDate>
+                  <FilterByDates></FilterByDates>
                 </template>
-                <template #action>
-                    <Action/>
-                </template>
-            </Resume>
+              </Graphic>
+            </template>
+            <template #action>
+              <Action/>
+            </template>
+          </Resume>
         </template>
-        <template #movements>
-            <Movements/>
-        </template>
+      <template #movements>
+        <Movements/>
+      </template>
     </Layout>
 </template>
 

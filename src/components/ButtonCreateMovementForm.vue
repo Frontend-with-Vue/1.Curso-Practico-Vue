@@ -1,5 +1,5 @@
 <script setup>
-    import FormBase from './FormBase.vue';
+    import FormBase from './Movements/Forms/FormBase.vue';
     import { inject, ref } from 'vue';
 
     const {addNewMovement, toggleModalMovement} = inject('movements');

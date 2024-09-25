@@ -1,5 +1,5 @@
 <script setup>
-    import ModalChooseDates from '../ModalChooseDates.vue';
+    import ModalChooseDates from '../Modals/ModalChooseDates.vue';
     import { inject } from 'vue';
 
     const { filterDate, showModalChooseDate, toggleModalChooseDate } = inject('movements');

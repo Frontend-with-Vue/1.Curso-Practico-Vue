@@ -33,31 +33,15 @@
                         :to="{name: 'home'}"
                         class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
                         exactActiveClass="border-blue-400 border-2 text-blue-400"
-                    >Home</router-link>
+                    >Movimientos</router-link>
                 </li>
                 <li class="flex w-min">
                     <router-link
                         @click="toggleMenu"
-                        :to="{name: 'about'}"
+                        :to="{name: 'goals'}"
                         class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
                         exactActiveClass="border-blue-400 border-2 text-blue-400"
-                    >About</router-link>
-                </li>
-                <li class="flex w-min">
-                    <router-link
-                        @click="toggleMenu"
-                        :to="{name: 'chat'}"
-                        class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
-                        exactActiveClass="border-blue-400 border-2 text-blue-400"
-                    >Chat</router-link>
-                </li>
-                <li class="flex w-min">
-                    <router-link
-                        @click="toggleMenu"
-                        :to="{ path: '/profile'}"
-                        class="p-2 rounded-lg font-bold hover:text-blue-400 hover:border-blue-400 hover:border-2"
-                        exactActiveClass="border-blue-400 border-2 text-blue-400"
-                    >Profile</router-link>
+                    >Objetivos</router-link>
                 </li>
             </ul>
         </nav>

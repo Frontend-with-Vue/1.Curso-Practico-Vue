@@ -2,7 +2,7 @@
     import draggableComponent from 'vuedraggable';
     import { inject } from 'vue';
     import MovementItem from './MovementItem.vue';
-    import ModalUpdateMovement from '../ModalUpdateMovement.vue';
+    import ModalUpdateMovement from './Modals/ModalUpdateMovement.vue';
     const {totalMovements, showModalUpdateMovement} = inject('movements');
 </script>
 

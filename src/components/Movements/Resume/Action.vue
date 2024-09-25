@@ -1,6 +1,6 @@
 <script setup>
-    import ModalMovement from '../ModalMovement.vue';
-    import Form from '../FormCreateMovement.vue';
+    import ModalMovement from '../Modals/ModalMovement.vue';
+    import Form from '../../ButtonCreateMovementForm.vue';
     import { inject } from 'vue';
 
     const {showModalMovement, toggleModalMovement} = inject('movements');

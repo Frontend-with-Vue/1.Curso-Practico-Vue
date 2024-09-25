@@ -14,46 +14,14 @@ const router = createRouter({
           path: '',
           name: 'home',
           alias: ['home', 'main'],
-          component: ()=> import('../components/Home-Cash.vue')
+          component: ()=> import('../views/Movements.vue')
         },
         {
-          path: 'about',
-          name: 'about',
-          component: () => import('../views/About.vue')
-        },
-        {
-          path: 'chat',
-          component: ()=> import('../views/Chat.vue'),
-          children: [
-            {
-              path: '',
-              name: 'chat',
-              components: {
-                default: () => import('../views/ChatContent.vue'),
-                sidebar: () => import('../views/ChatSideBar.vue')
-              }
-            }
-          ]
-        },
-        {
-          path: 'profile',
-          component: ()=> import('../views/Profile.vue'),
-          props: true,
-          children: [
-            {
-              path: ':userId',
-              name: 'profile',
-              component: () => import('../views/Profile.vue'),
-              props: true
-            }
-          ]
+          path: 'goals',
+          name: 'goals',
+          component: () => import('../views/Goals.vue')
         }
       ]
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/LogIn.vue')
     },
     {
       path: '/:pathMatch(.*)*',
