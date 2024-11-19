@@ -17,16 +17,6 @@ onMounted(() => {
 
 <template>
   <component :is="loading? SplashScreen: 'router-view'"></component>
-<!--
-  --Esta idea cuando los datos vengan del backend y demore
-  <Suspense>
-    <template #default>
-      <router-view />
-    </template>
-    <template #fallback>
-      <SplashScreen />
-    </template>
-  </Suspense> -->
 </template>
 
 <style scoped>
