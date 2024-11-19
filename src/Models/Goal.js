@@ -1,23 +1,19 @@
-export const Status = {
-  SUCCESS: 'success',
-  FAILED: 'failed'
-}
-
-let auxId = 1;
-
 export class Goal {
   constructor(
     {
-      title = '',
-      description = '',
-      amount = 0,
-      targetAmount = 0,
-      deadline = new Date() } = {}) {
-    this.id = auxId++;
-    this.title = title;
-    this.description = description;
-    this.currentAmount = amount;
-    this.targetAmount = targetAmount;
-    this.deadline = deadline;
+      id = null,
+      user_id = null,
+      goal_name = '',
+      target_amount = 0,
+      limit_date = new Date(),
+      gathered_amount = 0,
+      creation_date = new Date()} = {}) {
+      this.id = id,
+        this.user_id = user_id,
+        this.goal_name = goal_name,
+        this.target_amount = target_amount,
+        this.limit_date = limit_date,
+        this.gathered_amount = gathered_amount,
+        this.creation_date = creation_date
   }
 }

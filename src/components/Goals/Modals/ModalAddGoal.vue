@@ -4,17 +4,14 @@
       <span @click="$emit('close')" class="close-button">&times;</span>
       <h3 class="modal-title">Añadir Nuevo Objetivo</h3>
       <div class="input-container">
-        <label for="goal-title" class="input-label">Título:</label>
-        <input v-model="title" id="goal-title" placeholder="Ej. Ahorra para el viaje" class="input-field" />
-
-        <label for="goal-description" class="input-label">Descripción:</label>
-        <input v-model="description" id="goal-description" placeholder="Descripción del objetivo" class="input-field" />
+        <label for="goal-name" class="input-label">Nombre del Objetivo:</label>
+        <input v-model="goal_name" id="goal-name" placeholder="Ej. Ahorra para el viaje" class="input-field" />
 
         <label for="goal-target" class="input-label">Monto Objetivo:</label>
-        <input v-model.number="targetAmount" id="goal-target" type="number" placeholder="Monto al que aspiras" class="input-field" />
+        <input v-model.number="target_amount" id="goal-target" type="number" placeholder="Monto al que aspiras" class="input-field" />
 
         <label for="goal-deadline" class="input-label">Fecha Límite:</label>
-        <input v-model="deadline" id="goal-deadline" type="date" class="input-field" />
+        <input v-model="limit_date" id="goal-deadline" type="date" class="input-field" />
       </div>
       <button @click="submitGoal" class="submit-button">Añadir Objetivo</button>
     </div>
@@ -23,32 +20,37 @@
 
 <script setup>
 import { ref } from 'vue';
+import { Goal } from '@/Models/Goal.js'
 
-const title = ref('');
-const description = ref('');
-const targetAmount = ref(0);
-const deadline = ref(new Date().toISOString().substr(0, 10)); // Fecha por defecto
+// Definir las propiedades del nuevo objetivo basado en la clase Goal
+const goal_name = ref('');
+const target_amount = ref(0);
+const limit_date = ref(new Date().toISOString().substr(0, 10)); // Fecha por defecto
 
+// Acceder a la función emit mediante defineEmits
+const emit = defineEmits();
+
+// Función para enviar el nuevo objetivo
 const submitGoal = () => {
-  const newGoal = {
-    title: title.value,
-    description: description.value,
-    amount: 0, // Se establece en 0 ya que no se pide al usuario
-    targetAmount: targetAmount.value,
-    deadline: new Date(deadline.value),
-  };
+  // Crear el nuevo objetivo basado en la estructura de la clase Goal
+  const newGoal = new Goal({
+    goal_name: goal_name.value,
+    target_amount: target_amount.value,
+    limit_date: new Date(limit_date.value),
+    gathered_amount: 0,  // El valor inicial es 0
+    creation_date: new Date()  // Fecha de creación del objetivo
+  });
 
   clearFields();
 
-  // Emitir el nuevo objetivo al componente padre
-  // Puedes incluir aquí el $emit para enviar el nuevo objetivo
+  emit('addGoal', newGoal); // Emitir el evento correctamente usando emit
 };
 
+// Limpiar los campos después de enviar el objetivo
 const clearFields = () => {
-  title.value = '';
-  description.value = '';
-  targetAmount.value = 0;
-  deadline.value = new Date().toISOString().substr(0, 10);
+  goal_name.value = '';
+  target_amount.value = 0;
+  limit_date.value = new Date().toISOString().substr(0, 10);
 };
 </script>
 

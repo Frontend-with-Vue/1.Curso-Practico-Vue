@@ -5,7 +5,6 @@ import Graphic from '@/components/Movements/Resume/Graphic.vue';
 import FilterByDates from '@/components/Movements/Resume/FilterByDates.vue';
 import Action from '@/components/Movements/Resume/Action.vue';
 import Movements from '../components/Movements/MovementList.vue';
-import { Movement } from '@/Models/Movement.js';
 import { ref, computed, provide, onBeforeMount } from 'vue';
 import axios from 'axios';
 import { apiBaseUrl } from '@/apiConfig.js';
@@ -28,8 +27,8 @@ const fetchMovements = async () => {
   try {
     const response = await axios.get(`${apiBaseUrl}/movement/get/${userId}`, {
     });
-    console.log(response.data.body.data.movements);
     totalMovements.value = response.data.body.data.movements;
+    console.log(totalMovements.value);
   } catch (error) {
     console.error('Error fetching movements:', error);
   }
@@ -74,12 +73,6 @@ const removeMovement = async (id) => {
     console.error('Error en la solicitud de eliminación:', error);
   }
 };
-//No entiendo como mierda funciona la actualización de movimientos, parece estar roto el codigo
-
-
-
-
-
 
 const updateMovement = async (updatedMovement) => {
   try {
@@ -116,16 +109,6 @@ const currentUpdateMovement = computed(() => {
   return null;
 });
 const currentIdUpdatedMovement = ref(null);
-
-
-
-
-
-
-
-
-
-
 
 function convertToPeruTime(date) {
   const peruOffset = 5 * 60; // Perú está 5 horas detrás de UTC (UTC-5)
