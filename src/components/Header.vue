@@ -70,7 +70,7 @@ function logout() {
   position: fixed; /* Cambiado a fixed para que quede fijo en la parte superior */
   top: 20px;
   right: 20px;
-  background-color: #007bff; /* Color de fondo azul */
+  background-color: #ff5c5c; /* Color de fondo azul */
   color: white;
   border: none;
   border-radius: 4px;

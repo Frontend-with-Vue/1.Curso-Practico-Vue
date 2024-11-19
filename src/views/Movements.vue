@@ -1,125 +1,219 @@
 <script setup>
-    import Layout from '../components/Movements/Layout.vue';
-    import Resume from '@/components/Movements/Resume/Index.vue';
-    import Graphic from '@/components/Movements/Resume/Graphic.vue';
-    import FilterByDates from '@/components/Movements/Resume/FilterByDates.vue';
-    import Action from '@/components/Movements/Resume/Action.vue';
-    import Movements from '../components/Movements/MovementList.vue';
-    import { Movement, Type } from '@/Models/Movement.js';
-    import { ref, computed, provide, onBeforeMount } from 'vue';
+import Layout from '../components/Movements/Layout.vue';
+import Resume from '@/components/Movements/Resume/Index.vue';
+import Graphic from '@/components/Movements/Resume/Graphic.vue';
+import FilterByDates from '@/components/Movements/Resume/FilterByDates.vue';
+import Action from '@/components/Movements/Resume/Action.vue';
+import Movements from '../components/Movements/MovementList.vue';
+import { Movement } from '@/Models/Movement.js';
+import { ref, computed, provide, onBeforeMount } from 'vue';
+import axios from 'axios';
+import { apiBaseUrl } from '@/apiConfig.js';
 
-    const totalMovements = ref([]);
-    function removeMovement(id){
-        totalMovements.value = totalMovements.value.filter(movement => movement.id !== id);
+const totalMovements = ref([]);
+const userToken = localStorage.getItem('authToken');
+const userId = sessionStorage.getItem('UserId');
+
+const showModalMovement = ref(false);
+const showModalUpdateMovement = ref(false);
+const showModalChooseDate = ref(false);
+const filterDate = ref(3);
+const rangeDates = ref([]);
+
+const fetchMovements = async () => {
+  if (!userId || !userToken) {
+    console.error('Usuario no autenticado o falta el token.');
+    return;
+  }
+  try {
+    const response = await axios.get(`${apiBaseUrl}/movement/get/${userId}`, {
+    });
+    console.log(response.data.body.data.movements);
+    totalMovements.value = response.data.body.data.movements;
+  } catch (error) {
+    console.error('Error fetching movements:', error);
+  }
+};
+const addNewMovement = async (movement) => {
+  try {
+    const { id, date, ...movementData } = movement;
+    const userId = sessionStorage.getItem('UserId');
+    if (!userId) {
+      console.error('User ID no disponible');
+      return;
     }
-    function addNewMovement(movement){
-        totalMovements.value.push(movement);
+    movementData.user_id = userId;
+    console.log(movementData);
+    const response = await axios.post(`${apiBaseUrl}/movement/post`, movementData, {
+    });
+    if (response.data.body.success) {
+      await fetchMovements();
+      console.log('Movimiento agregado y movimientos recargados');
+    } else {
+      console.error('Error al agregar el movimiento');
     }
-    function updateMovemente(updatedMovement){
-        totalMovements.value = totalMovements.value.map(movement=>{
-            if(movement.id == updatedMovement.id){
-                return new Movement({...updatedMovement})
-            } else {
-                return new Movement(movement)
-            }
-        })
+  } catch (error) {
+    console.error('Error en la solicitud de adición:', error);
+  }
+};
+const removeMovement = async (id) => {
+  try {
+    if (!userId || !userToken) {
+      console.error('Usuario no autenticado o falta el token.');
+      return;
+    }
+    const response = await axios.delete(`${apiBaseUrl}/movement/delete/${id}`, {
+    });
+    if (response.data.body.success) {
+      await fetchMovements();
+      console.log('Movimiento eliminado y datos actualizados');
+    } else {
+      console.error('Error al eliminar el movimiento');
+    }
+  } catch (error) {
+    console.error('Error en la solicitud de eliminación:', error);
+  }
+};
+//No entiendo como mierda funciona la actualización de movimientos, parece estar roto el codigo
+
+
+
+
+
+
+const updateMovement = async (updatedMovement) => {
+  try {
+    const requestBody = {
+      id: updatedMovement.id,
+      update_fields: { ...updatedMovement }
     };
-
-    const currentIdUpdatedMovement = ref(null);
-    const currentUpdateMovement = computed(()=>{
-        if(currentIdUpdatedMovement.value){
-            return totalMovements.value.find((mov)=>mov.id == currentIdUpdatedMovement.value);
+    const response = await axios.patch(`${apiBaseUrl}/movement/patch`, requestBody, {
+    });
+    if (response.data.body.success) {
+      totalMovements.value = totalMovements.value.map(movement => {
+        if (movement.id === updatedMovement.id) {
+          console.log("Movimiento actualizado con éxito en el servidor y en el estado local");
+          return { ...updatedMovement };
+        } else {
+          return movement;
         }
-        return null;
-    });
-    function setIdUpdatedMovement(newId){
-        currentIdUpdatedMovement.value = newId;
-        toggleModalUpdateMovement();
+      });
+    } else {
+      console.error("Error al actualizar el movimiento en el servidor");
     }
+  } catch (error) {
+    console.error('Error en la solicitud de actualización:', error);
+  }
+};
+function setIdUpdatedMovement(newId) {
+  currentIdUpdatedMovement.value = newId;
+  toggleModalUpdateMovement();
+}
+const currentUpdateMovement = computed(() => {
+  if (currentIdUpdatedMovement.value) {
+    return totalMovements.value.find((mov) => mov.id === currentIdUpdatedMovement.value);
+  }
+  return null;
+});
+const currentIdUpdatedMovement = ref(null);
 
-    const showModalUpdateMovement = ref(false);
-    function toggleModalUpdateMovement(){
-        showModalUpdateMovement.value = !showModalUpdateMovement.value;
-    }
 
-    const filterDate = ref(3);
-    const rangeDates = ref([]);
-    const filterMovementsDate = computed(()=>{
-        if(filterDate.value == 1) return totalMovements.value;
-        if(filterDate.value == 2) return totalMovements.value.filter(movement=>checkInRange(movement));
-        if(filterDate.value == 3) return totalMovements.value.filter(movement => movement.date > (new Date().getTime() - 30*24*60*60*1000));
-        return totalMovements.value
+
+
+
+
+
+
+
+
+
+function convertToPeruTime(date) {
+  const peruOffset = 5 * 60; // Perú está 5 horas detrás de UTC (UTC-5)
+  const localDate = new Date(date);
+
+  // Ajustar la hora a la zona horaria de Perú (restamos 5 horas)
+  localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset() - peruOffset);
+
+  return localDate;
+}
+function checkInRange(movement) {
+  const movementDate = new Date(movement.date).getTime();
+  const statDate = new Date(rangeDates.value[0]).getTime();
+  const endDate = new Date(rangeDates.value[1]).getTime();
+  return movementDate >= statDate && movementDate <= endDate;
+}
+const filterMovementsDate = computed(() => {
+  const currentDate = new Date();
+  const currentDatePeru = convertToPeruTime(currentDate);
+  if (filterDate.value === 1) return totalMovements.value;
+  if (filterDate.value === 2) {
+    return totalMovements.value.filter(movement => {
+      const movementDatePeru = convertToPeruTime(movement.date);
+      return checkInRange(movementDatePeru);
     });
-    function checkInRange(movement){
-        const movementDate = new Date(movement.date).getTime();
-        const statDate = new Date(rangeDates.value[0]).getTime();
-        const endDate = new Date(rangeDates.value[1]).getTime();
-        const isValid = movementDate >= statDate && movementDate <= endDate;
-        return isValid;
-    }
-
-    const showModalMovement = ref(false);
-    function toggleModalMovement(){
-        showModalMovement.value = !showModalMovement.value;
-    };
-
-    const showModalChooseDate = ref(false);
-    function toggleModalChooseDate(){
-        showModalChooseDate.value = !showModalChooseDate.value;
-    }
-
-    provide('movements',{
-        totalMovements,
-        removeMovement,
-        showModalMovement,
-        toggleModalMovement,
-        addNewMovement,
-        filterDate,
-        rangeDates,
-        filterMovementsDate,
-        currentIdUpdatedMovement,
-        currentUpdateMovement,
-        setIdUpdatedMovement,
-        toggleModalUpdateMovement,
-        showModalUpdateMovement,
-        updateMovemente,
-        toggleModalChooseDate,
-        showModalChooseDate
+  }
+  if (filterDate.value === 3) {
+    return totalMovements.value.filter(movement => {
+      const movementDatePeru = convertToPeruTime(movement.date);
+      return movementDatePeru > (currentDatePeru.getTime() - 30 * 24 * 60 * 60 * 1000);
     });
+  }
+  return totalMovements.value;
+});
 
+function toggleModalMovement() {
+  showModalMovement.value = !showModalMovement.value;
+}
+function toggleModalUpdateMovement() {
+  showModalUpdateMovement.value = !showModalUpdateMovement.value;
+}
+function toggleModalChooseDate() {
+  showModalChooseDate.value = !showModalChooseDate.value;
+}
 
-    onBeforeMount(() => {
-        totalMovements.value =  [
-        new Movement({ title: 'Salary', description: 'Monthly salary payment', amount: 100, type: Type.INCOME, date: new Date('04-15-2024') }),
-        new Movement({ title: 'Groceries', description: 'Weekly grocery shopping', amount: 150, type: Type.OUTCOME, date: new Date('05-15-2024') }),
-        new Movement({ title: 'Electricity Bill', description: 'Monthly electricity bill payment', amount: 75, type: Type.OUTCOME, date: new Date('06-15-2024') }),
-        new Movement({ title: 'Freelance Work', description: 'Payment for freelance project', amount: 200, type: Type.INCOME, date: new Date('07-15-2024') }),
-        new Movement({ title: 'Gym Membership', description: 'Monthly gym membership fee', amount: 50, type: Type.OUTCOME, date: new Date('08-1-2024') })
-        ];
-        console.log(totalMovements.value)
-    });
+provide('movements', {
+  totalMovements,
+  removeMovement,
+  showModalMovement,
+  toggleModalMovement,
+  addNewMovement,
+  filterDate,
+  rangeDates,
+  filterMovementsDate,
+  toggleModalUpdateMovement,
+  showModalUpdateMovement,
+  updateMovement,
+  toggleModalChooseDate,
+  showModalChooseDate,
+  currentUpdateMovement,
+  setIdUpdatedMovement
+});
+onBeforeMount(() => {
+  fetchMovements();
+});
 </script>
 
 <template>
-    <Layout>
-        <template #resume>
-          <Resume>
-            <template #graphic>
-              <Graphic>
-                <template #filterByDate>
-                  <FilterByDates></FilterByDates>
-                </template>
-              </Graphic>
+  <Layout>
+    <template #resume>
+      <Resume>
+        <template #graphic>
+          <Graphic>
+            <template #filterByDate>
+              <FilterByDates></FilterByDates>
             </template>
-            <template #action>
-              <Action/>
-            </template>
-          </Resume>
+          </Graphic>
         </template>
-      <template #movements>
-        <Movements/>
-      </template>
-    </Layout>
+        <template #action>
+          <Action />
+        </template>
+      </Resume>
+    </template>
+    <template #movements>
+      <Movements />
+    </template>
+  </Layout>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

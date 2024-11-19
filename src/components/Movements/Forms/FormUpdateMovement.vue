@@ -2,12 +2,12 @@
     import FormBase from './FormBase.vue';
     import { inject, ref } from 'vue';
 
-    const {updateMovemente, toggleModalUpdateMovement, currentUpdateMovement} = inject('movements');
+    const {updateMovement, toggleModalUpdateMovement, currentUpdateMovement} = inject('movements');
 
     const labelSubmit = ref('Actualizar movimiento');
 
     function actualizarMovement(newMovement){
-        updateMovemente(newMovement);
+        updateMovement(newMovement);
         toggleModalUpdateMovement();
     }
 </script>
